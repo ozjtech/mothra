@@ -3,7 +3,7 @@
 #Assembled With:
 
 	#Python 3.8.3
-	#cx_Freeze 6.1
+	#py2app 0.21
 
 #Caveat
 	
@@ -410,7 +410,7 @@ def logi_numerizer():
     global ordertotal_thirteen
 
     helper = tk.Tk()
-    helper.geometry('225x400+425+100')
+    helper.geometry('225x330+425+100')
     helper.title('\U0001F916 Handlebars \U0001F916')
     helperdisplay = tk.Text(helper)
 
@@ -423,7 +423,7 @@ def logi_numerizer():
     if firstchoice.get() == '1':
         branch = tk.Tk()
         branch.title('\N{rocket} Scooter 1.0 \N{rocket}')
-        branch.geometry('330x60')
+        branch.geometry('352x60')
 
         root.destroy()
 
@@ -463,7 +463,7 @@ def logi_numerizer():
     if firstchoice.get() == '2':
         branch = tk.Tk()
         branch.title('\N{rocket} Scooter 1.0 \N{rocket}')
-        branch.geometry('330x120')
+        branch.geometry('352x86')
 
         root.destroy()
 
@@ -523,7 +523,7 @@ def logi_numerizer():
 
         branch = tk.Tk()
         branch.title('\N{rocket} Scooter 1.0 \N{rocket}')
-        branch.geometry('330x120')
+        branch.geometry('352x109')
 
         root.destroy()
 
@@ -603,7 +603,7 @@ def logi_numerizer():
 
         branch = tk.Tk()
         branch.title('\N{rocket} Scooter 1.0 \N{rocket}')
-        branch.geometry('330x150')
+        branch.geometry('352x132')
 
         root.destroy()
 
@@ -701,7 +701,7 @@ def logi_numerizer():
 
         branch = tk.Tk()
         branch.title('\N{rocket} Scooter 1.0 \N{rocket}')
-        branch.geometry('330x180')
+        branch.geometry('352x155')
 
         root.destroy()
 
@@ -817,7 +817,7 @@ def logi_numerizer():
 
         branch = tk.Tk()
         branch.title('\N{rocket} Scooter 1.0 \N{rocket}')
-        branch.geometry('330x210')
+        branch.geometry('352x178')
 
         root.destroy()
 
@@ -951,7 +951,7 @@ def logi_numerizer():
 
         branch = tk.Tk()
         branch.title('\N{rocket} Scooter 1.0 \N{rocket}')
-        branch.geometry('330x240')
+        branch.geometry('352x201')
 
         root.destroy()
 
@@ -1102,7 +1102,7 @@ def logi_numerizer():
 
         branch = tk.Tk()
         branch.title('\N{rocket} Scooter 1.0 \N{rocket}')
-        branch.geometry('330x270')
+        branch.geometry('352x224')
 
         root.destroy()
 
@@ -1270,7 +1270,7 @@ def logi_numerizer():
 
         branch = tk.Tk()
         branch.title('\N{rocket} Scooter 1.0 \N{rocket}')
-        branch.geometry('330x300')
+        branch.geometry('352x247')
 
         root.destroy()
 
@@ -1456,7 +1456,7 @@ def logi_numerizer():
 
         branch = tk.Tk()
         branch.title('\N{rocket} Scooter 1.0 \N{rocket}')
-        branch.geometry('330x330')
+        branch.geometry('360x274')
 
         root.destroy()
 
@@ -1659,7 +1659,7 @@ def logi_numerizer():
 
         branch = tk.Tk()
         branch.title('\N{rocket} Scooter 1.0 \N{rocket}')
-        branch.geometry('330x360')
+        branch.geometry('360x297')
 
         root.destroy()
 
@@ -1879,7 +1879,7 @@ def logi_numerizer():
 
         branch = tk.Tk()
         branch.title('\N{rocket} Scooter 1.0 \N{rocket}')
-        branch.geometry('330x390')
+        branch.geometry('360x320')
 
         root.destroy()
 
