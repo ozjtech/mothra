@@ -1,167 +1,171 @@
     ### SCOOTER 1.0 ###
+'''
+ Assembled With:
 
-#Assembled With:
+    Python 3.8.1
+    tkinter 8.6
+    Py2App 0.21
+ 
 
-	#Python 3.8.3
-	#py2app 0.21
-
-#Caveat
+Caveat
 	
-	# Due to complications with cx_Freeze and my installation of Python, I’m now 
-    # using an older version of Python (3.7.7) which I installed with Homebrew. 
-    # For that reason, running the script using Python 3.8 might produce slightly 
-    # different results. It should still be perfectly functional either way.
+    Due to complications with permissions and my installation of Python, I’m now 
+    using an older version of Python (3.8.1) which I installed with pyenv. 
+    For that reason, running the script using Python 3.8.2+ might produce slightly 
+    different results. It should still be perfectly functional either way.
 
-	# This code is deceptively long due to other complications with tkinter 
-    # itself. I experimented with using combinations of classes, methods, 
-    # and nested if statements but found that those would not run properly 
-    # with the way tkinter is setup. The main three issues are as follows: 
+    This code is deceptively long due to other complications with tkinter 
+    itself. I experimented with using combinations of classes, methods, 
+    and nested if statements but found that those would not run properly 
+    with the way tkinter is setup. The main three issues are as follows: 
 
-	#     1) A tkinter window and its components must be in the same statement. 
-    #       That is that that you cannot separate them with if statements or 
-    #       hide widgets inside a function.
+        1) A tkinter window and its components must be in the same statement. 
+        That is to say that that you cannot separate them with if statements or 
+        hide widgets inside a function.
 
-	#     2) Certain tkinter components can’t be used in a function/method 
-    #       at all. The main one that can’t be used as a command, much to my 
-    #       dismay, is Combobox. Those are the pretty dropdown boxes.
+        2) Certain tkinter components can’t be used in a function/method 
+        at all. The main one that can’t be used as a command, much to my 
+        dismay, is Combobox. Those are the pretty dropdown boxes.
 
-	#     3) You cannot, to my knowledge and experimentation, define a variable
-    #       using the attributes from an object. This makes classes not 
-    #       particularly useful in this case.
+        3) You cannot, to my knowledge and experimentation, define a variable
+        using the attributes from an object. This makes classes not 
+        particularly useful in this case.
 
-	# That being said, I am open to any suggestions/fixes to these issues. 
-    # Scooter is still very much a work in progress, as far as I’m concerned.
-      
-    # If you read through all of this script you’ll find a staggering amount of
-    # redundancy! 
-
-    # I hope this documentation will help you understand the architecture of 
-    # this script without too much trouble.
-
-### DESCRIPTION: ###
-
-    # Scooter is a new alternative to the Splitter we’ve all come to know 
-    # and love! It allows complete control over the split you’re generating
-    # by showing immediate tallies of how many orders each Logi would get if 
-    # they had slightly different letters. To put it simply: if Splitter 1.01 is
-    # a self-driving car and splitting manually is driving stick, Scooter is 
-    # like driving your first automatic. 
-
-### HOW TO: ###
-
-    # 1) Run splitter query as normal, either through PopSQL or the Snowflake
-    # entry point.
-    # 2) Export the results as a CSV file.
-    # 3) Boot up Scooter 1.0.
-    # 4) Hit “Choose file” and select the split you just exported.
-    # 5) Enter the number of Logi’s and hit “Initialize”.
-    # 6) Three windows will pop up. The left one, “Scooter 1.0”, is where you
-    #   select each Logi’s letters. The right one, “Handlebars”, has a list of 
-    #   each Metro’s order tally for easy reference. The third is a terminal 
-    #   which will display any error messages. Please copy and paste those in a 
-    #   DM to me if you run into any debilitating errors! 
-    # 7) Choose each Logi’s letters using the dropdown menus and hit 
-    #    “Generate when you’re done. Best practice is to start from the bottom and 
-    #    work your way up. After each Logi has letters, it becomes very easy to scoot
-    #    the results to your liking!
-    # 8) A final window, “Scooted”, will pop up with your completed split. 
-    #    The text in the window is editable so it’s easiest to type everybody’s 
-    #    names and the day’s schedule here so that you can just copy and paste 
-    #    the split into Slack when it’s done. 
-
-### FLOW: ###
-
-    # >User boots up Scooter 
-
-    # > root window (“Initializing Scooter”) appears, with a file name 
-    #       Text box (filedisplay), a button (fileopen, “Choose file”), 
-    #       a Combobox (firstchoice), and a second button (initialize)
-    # > User hits fileopen to choose their file, which then starts the 
-    #       function filechooser():
-
-    #         >filechooser() opens a file selection menu 
-    #           (filename = filedialog.askopenfilename), where the User selects 
-    #           their csv file 
-    #         > User’s csv file is read using the csv.reader(open()) function
-    #         > results from csv file are split into three lists: 
-    #           metro_list, order_list, order_list_str (duplicate of order_list 
-    #           but in str format)
-    #         > filelocation (the text for Text: file display) is set to filename
-
-    #         > numbers_list is generated using a list comprehension based 
-    #           on the length of metro_list
-    #         > numbered_metro_list  is formed by combining numbers_list 
-    #           and metro_list with a list comprehension
-    #         > helpertext is formed by combining numbered_metro_list 
-    #           and order_list with a list comprehension
-
-    # > User returns to the root window (“Initializing Scooter”) and 
-    #       selects the number of Logi’s (firstchoice) 
-    # > User confirms selection by hitting “Generate” button, 
-    #       which starts the function logi_numerizer():
-
-    #       > logi_numerizer() then sets all input/ordertotal variables to 
-    #           global, meaning that any changes made inside of this function 
-    #           are universal
-
-    #       > logi_numerizer() opens helper window (“Handlebars”), with a for 
-    #           loop to insert the text from helpertext (the list that was a 
-    #           combination of numbered_metro_list and order_list_str), 
-    #           then disables the text window so user may not type in it
+    That being said, I am open to any suggestions/fixes to these issues. 
+    Scooter is still very much a work in progress, as far as I’m concerned.
     
-    #       > logi_numerizer() opens one of twelve versions of the 
-    #           branch window (“Scooter 1.0”), based on the results of 
-    #           firstchoice.get() (the “Initialize” button) 
+    If you read through all of this script you’ll find a staggering amount of
+    redundancy! 
 
-    # > branch window consists of the following:
-        
-    #    (firstchoice.get() # of logi rows consisting of ):
+    I hope this documentation will help you understand the architecture of 
+    this script without too much trouble.
 
-    #       label_x (Logi’s #) | option_x (dropdown menu which affects input_x 
-    #       and starts function select_x/select_xp) | display_x label 
-    #       (order tally, value is set by function in option_x)
+ DESCRIPTION: 
 
-    #       final row with a button (“generate”) in the  right corner
+    Scooter is a new alternative to the Splitter we’ve all come to know 
+    and love! It allows complete control over the split you’re generating
+    by showing immediate tallies of how many orders each Logi would get if 
+    they had slightly different letters. To put it simply: if Splitter 1.01 is
+    a self-driving car and splitting manually is driving stick, Scooter is 
+    like driving your first automatic. 
 
-    # > User selects options using option_x dropdown menus
-    # > any time a dropdown menu is used, select_x() / select_x() 
-    #       and scoot_x() / scoot_xp() are started:
-        
-    #           > select_x() calculates the order tally (text in display_x) 
-    #               by finding sum of the range of numbers from the index 
-    #               number of the current value of input_x to the current value
-    #               of input_y (the next dropdown menu) and converting it to 
-    #               a string which it then sets as ordertotal_x
+ HOW TO: 
 
-    #           > scoot_x() does the same but is triggered when the dropdown menu 
-    #               below is changed (I.e. if you changed option_four it would 
-    #               trigger scoot3 so that the order tally will automatically 
-    #               adjust either way) 
+    1) Run splitter query as normal, either through PopSQL or the Snowflake
+    entry point.
+    2) Export the results as a CSV file.
+    3) Boot up Scooter 1.0.
+    4) Hit “Choose file” and select the split you just exported.
+    5) Enter the number of Logi’s and hit “Initialize”.
+    6) Three windows will pop up. The left one, “Scooter 1.0”, is where you
+    select each Logi’s letters. The right one, “Handlebars”, has a list of 
+    each Metro’s order tally for easy reference. The third is a terminal 
+    which will display any error messages. Please copy and paste those in a 
+    DM to me if you run into any debilitating errors! 
+    7) Choose each Logi’s letters using the dropdown menus and hit 
+    “Generate when you’re done. Best practice is to start from the bottom and 
+    work your way up. After each Logi has letters, it becomes very easy to scoot
+    the results to your liking!
+    8) A final window, “Scooted”, will pop up with your completed split. 
+    The text in the window is editable so it’s easiest to type everybody’s 
+    names and the day’s schedule here so that you can just copy and paste 
+    the split into Slack when it’s done. 
 
-    #           >select/scoot_xp are copies of the same functions that use the 
-    #               index number of the last dropdown menu (which is named 
-    #               label/option/input/display_last) instead of the next number 
-    #               value’s (I.e. instead of checking for the sum of the 
-    #               range of order tallies from input_three to input_four, 
-    #               it checks for the sum for input_three to input_last) 
+ FLOW: 
 
-    #           > the p is for “penultimate”, isn’t that fun?
+    >User boots up Scooter 
 
-    # > Once User is done scooting, they hit the “Generate” button, 
-    #       which starts finisher():
-        
-    #           > finisher() opens a final window, (result, “Scooted”)
+    > root window (“Initializing Scooter”) appears, with a file name 
+        Text box (filedisplay), a button (fileopen, “Choose file”), 
+        a Combobox (firstchoice), and a second button (initialize)
+    > User hits fileopen to choose their file, which then starts the 
+        function filechooser():
 
-    #           > finisher() declares a string variable named split and 
-    #               inserts the selected metro for each logi (found by 
-    #               using the index number to return the metro from input_x but 
-    #               from metro_list so it doesn’t have the number) and the order 
-    #               tallies (using ordertotal_x(get)) into a prewritten 
-    #               blank split 
+            >filechooser() opens a file selection menu 
+            (filename = filedialog.askopenfilename), where the User selects 
+            their csv file 
+            > User’s csv file is read using the csv.reader(open()) function
+            > results from csv file are split into three lists: 
+            metro_list, order_list, order_list_str (duplicate of order_list 
+            but in str format)
+            > filelocation (the text for Text: file display) is set to filename
 
-    #           > finisher() closes the branch and helper windows
+            > numbers_list is generated using a list comprehension based 
+            on the length of metro_list
+            > numbered_metro_list  is formed by combining numbers_list 
+            and metro_list with a list comprehension
+            > helpertext is formed by combining numbered_metro_list 
+            and order_list with a list comprehension
 
-    # > fin
+    > User returns to the root window (“Initializing Scooter”) and 
+        selects the number of Logi’s (firstchoice) 
+    > User confirms selection by hitting “Generate” button, 
+        which starts the function logi_numerizer():
+
+        > logi_numerizer() then sets all input/ordertotal variables to 
+            global, meaning that any changes made inside of this function 
+            are universal
+
+        > logi_numerizer() opens helper window (“Handlebars”), with a for 
+            loop to insert the text from helpertext (the list that was a 
+            combination of numbered_metro_list and order_list_str), 
+            then disables the text window so user may not type in it
+
+        > logi_numerizer() opens one of twelve versions of the 
+            branch window (“Scooter 1.0”), based on the results of 
+            firstchoice.get() (the “Initialize” button) 
+
+    > branch window consists of the following:
+    
+    (firstchoice.get()  of logi rows consisting of ):
+
+        label_x (Logi’s ) | option_x (dropdown menu which affects input_x 
+        and starts function select_x/select_xp) | display_x label 
+        (order tally, value is set by function in option_x)
+
+        final row with a button (“generate”) in the  right corner
+
+    > User selects options using option_x dropdown menus
+    > any time a dropdown menu is used, select_x() / select_x() 
+        and scoot_x() / scoot_xp() are started:
+    
+            > select_x() calculates the order tally (text in display_x) 
+                by finding sum of the range of numbers from the index 
+                number of the current value of input_x to the current value
+                of input_y (the next dropdown menu) and converting it to 
+                a string which it then sets as ordertotal_x
+
+            > scoot_x() does the same but is triggered when the dropdown menu 
+                below is changed (I.e. if you changed option_four it would 
+                trigger scoot3 so that the order tally will automatically 
+                adjust either way) 
+
+            >select/scoot_xp are copies of the same functions that use the 
+                index number of the last dropdown menu (which is named 
+                label/option/input/display_last) instead of the next number 
+                value’s (I.e. instead of checking for the sum of the 
+                range of order tallies from input_three to input_four, 
+                it checks for the sum for input_three to input_last) 
+
+            > the p is for “penultimate”, isn’t that fun?
+
+    > Once User is done scooting, they hit the “Generate” button, 
+        which starts finisher():
+    
+            > finisher() opens a final window, (result, “Scooted”)
+
+            > finisher() declares a string variable named split and 
+                inserts the selected metro for each logi (found by 
+                using the index number to return the metro from input_x but 
+                from metro_list so it doesn’t have the number) and the order 
+                tallies (using ordertotal_x(get)) into a prewritten 
+                blank split 
+
+            > finisher() closes the branch and helper windows
+
+    > fin 
+    
+    '''
 
 import tkinter as tk
 from tkinter import ttk
@@ -379,7 +383,6 @@ filedisplay.configure(state='disabled')
 
 
 def logi_numerizer():
-    #global numberoflogis
     global input_last
     global ordertotal_last
     global input_one
