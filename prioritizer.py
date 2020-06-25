@@ -43,10 +43,10 @@ def taskEngine():
 
 taskEngine()
 
-with open("priorities.json", 'w') as f:
+with open("priorities.json", 'w') as myFile:
     # indent=2 is not needed but makes the file 
     # human-readable for more complicated data
     json.dump(myList, f, indent=2) 
     
-with open("priorities.json", 'r') as f:
+with open("priorities.json", 'r') as myFile:
     myList = json.load(f)
